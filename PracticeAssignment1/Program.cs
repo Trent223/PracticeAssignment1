@@ -2,46 +2,38 @@
 
 using PracticeAssignment1;
 
-Console.WriteLine("Welcome to your new job!");
+Console.WriteLine("Welcome to the program. Please choose from the following menu options:");
+    Console.WriteLine("1: Add an employee");
+    Console.WriteLine("2: View all current employees");
+    Console.WriteLine("3: Remove an employee by name");
+    Console.WriteLine("4: Exit");
 
-Console.WriteLine("Please enter your name");
-var name = Console.ReadLine();
+List<Employee> employees = new List<Employee>();
 
-Console.WriteLine("Please enter your birthday");
-var birthdayInput = Console.ReadLine();
+string userInput = Console.ReadLine();
 
-DateTime birthday; 
-
-while(!DateTime.TryParse(birthdayInput, out birthday))
+while(userInput != "4")
 {
-    Console.WriteLine("Invalid birthday, please try again");
-    birthdayInput = Console.ReadLine();
+    
+    if (userInput == "1")
+    {
+        employees = Menu.AddEmployee(employees);
+    }
+    else if (userInput == "2")
+    {
+        Menu.DisplayEmployees(employees);
+    }
+    else if (userInput == "3")
+    {
+        Console.WriteLine("Enter the name of the employee to remove");
+        var name = Console.ReadLine();
+        Menu.RemoveEmployee(employees, name);
+    }
+    else if (userInput == "4") //Exit
+    {
+
+    }
+    Console.WriteLine("What next?");
+    userInput = Console.ReadLine();
 }
-
-Console.WriteLine("Please enter your salary");
-var salary = Console.ReadLine();
-
-var employee = new Employee
-{
-    Name = name,
-    Birthday = birthday,
-    Salary = decimal.Parse(salary)
-};
-
-Console.WriteLine($"Welcome to the company, {employee.Name}! " +
-    $"Your salary is {employee.Salary} " +
-    $"and your birthday is {employee.Birthday.ToShortDateString()}.");
-
-
-DateTime myNextBirthday = new DateTime(DateTime.Today.Year, employee.Birthday.Month, employee.Birthday.Day);
-
-if (myNextBirthday < DateTime.Today) //birthday already happened this year
-{
-    myNextBirthday = myNextBirthday.AddYears(1);
-}
-
-var daysUntilBirthday = (myNextBirthday - DateTime.Today).Days;
-Console.WriteLine($"Your birthday will be in {daysUntilBirthday} days!");
-
-
 
