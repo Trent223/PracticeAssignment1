@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using PracticeAssignment1;
+using System.Text.Json;
 
 Console.WriteLine("Welcome to the program. Please choose from the following menu options:");
     Console.WriteLine("1: Add an employee");
@@ -10,11 +11,19 @@ Console.WriteLine("Welcome to the program. Please choose from the following menu
 
 List<Employee> employees = new List<Employee>();
 
+var options = new JsonSerializerOptions
+{
+    PropertyNameCaseInsensitive = true
+};
+
+var fileText = File.ReadAllText("employees.json");
+var deserialized = JsonSerializer.Deserialize<List<Employee>>(fileText, options);
+employees.AddRange(deserialized);
+
 string userInput = Console.ReadLine();
 
 while(userInput != "4")
-{
-    
+{   
     if (userInput == "1")
     {
         employees = Menu.AddEmployee(employees);
@@ -37,3 +46,5 @@ while(userInput != "4")
     userInput = Console.ReadLine();
 }
 
+var json = JsonSerializer.Serialize(employees);
+File.WriteAllText("employees.json", json);
